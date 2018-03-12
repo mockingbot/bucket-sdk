@@ -1,0 +1,37 @@
+{
+  "private": true,
+  "name": "bucket-sdk",
+  "version": "0.0.0",
+  "author": "mockingbot",
+  "license": "MIT",
+  "description": "Bucket SDK for AWS-S3/TenCent-Cloud.",
+  "repository": "https://github.com/mockingbot/bucket-sdk.git",
+  "main": "library/index.js",
+  "scripts": {
+    "// script ======================": "",
+    "script-base": "babel-node ./script",
+    "script-pack": "babel-node ./script pack",
+    "script-publish": "babel-node ./script pack publish",
+    "script-publish-dev": "babel-node ./script pack publish-dev",
+    "// build =======================": "",
+    "build-library": "babel-node ./script/webpack production profile",
+    "build-library-dev": "babel-node ./script/webpack development watch",
+    "// ==============================": "",
+    "analyze-stat": "webpack-bundle-analyzer ./profile-stat-gitignore.json",
+    "prepack": "echo \"Error: should run pack with script-*\" && exit 1"
+  },
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.207.0",
+    "cos-nodejs-sdk-slim": "^2.3.0-dev.0",
+    "dev-dep-tool": "^0.0.14",
+    "dev-dep-web": "^0.0.14",
+    "dr-js": "^0.12.1-dev.1",
+    "webpack-bundle-analyzer": "^2.11.1",
+    "babel-plugin-lodash": "^3.3.2",
+    "lodash-webpack-plugin": "^0.11.4"
+  }
+}
