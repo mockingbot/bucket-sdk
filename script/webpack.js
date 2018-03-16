@@ -28,11 +28,12 @@ runMain(async (logger) => {
     mode,
     bail: isProduction,
     target: 'node', // support node main modules like 'fs'
-    output: { path: fromOutput('library'), filename: '[name].js', library: 'BucketSDK', libraryTarget: 'umd' },
+    output: { path: fromOutput('library'), filename: '[name].js', libraryTarget: 'commonjs2' },
     entry: { index: 'source/index' },
     resolve: { alias: { source: fromRoot('source') } },
     module: { rules: [ { test: /\.js$/, use: [ { loader: 'babel-loader', options: babelOption } ] } ] },
-    plugins: [ new DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify(mode), '__DEV__': !isProduction }), new LodashWebpackPlugin() ]
+    plugins: [ new DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify(mode), '__DEV__': !isProduction }), new LodashWebpackPlugin() ],
+    optimization: { minimize: false }
   }
 
   logger.padLog(`compile with webpack mode: ${mode}, isWatch: ${Boolean(isWatch)}`)

@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "bucket-sdk",
-  "version": "0.0.0",
+  "version": "0.1.0-dev.0",
   "author": "mockingbot",
   "license": "MIT",
   "description": "Bucket SDK for AWS-S3/TenCent-Cloud.",
@@ -25,11 +25,11 @@
     "npm": ">=5"
   },
   "devDependencies": {
-    "aws-sdk": "^2.207.0",
-    "cos-nodejs-sdk-slim": "^2.3.0-dev.0",
-    "dev-dep-tool": "^0.0.14",
-    "dev-dep-web": "^0.0.14",
-    "dr-js": "^0.12.1-dev.1",
+    "aws-sdk": "^2.210.0",
+    "cos-nodejs-sdk-slim": "^2.3.0-dev.1",
+    "dev-dep-tool": "^0.1.0-dev.0",
+    "dev-dep-web": "^0.1.0-dev.1",
+    "dr-js": "^0.12.1-dev.2",
     "webpack-bundle-analyzer": "^2.11.1",
     "babel-plugin-lodash": "^3.3.2",
     "lodash-webpack-plugin": "^0.11.4"
