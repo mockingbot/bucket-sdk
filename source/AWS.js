@@ -58,12 +58,14 @@ const connectAwsBucket = async ({ accessKeyId, secretAccessKey, region, bucket, 
 }
 
 // check: http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html
-const getS3BucketList = (s3Service) => new Promise((resolve, reject) => s3Service.listBuckets((error, result) => {
-  if (error) return reject(error)
-  // __DEV__ && console.log('[getS3BucketList]', result)
-  const { Buckets: bucketList, Owner: ownerMap } = result
-  resolve({ bucketList, ownerMap })
-}))
+const getS3BucketList = (s3Service) => new Promise((resolve, reject) => s3Service.listBuckets(
+  (error, result) => {
+    if (error) return reject(error)
+    // __DEV__ && console.log('[getS3BucketList]', result)
+    const { Buckets: bucketList, Owner: ownerMap } = result
+    resolve({ bucketList, ownerMap })
+  }
+))
 const getS3ObjectList = (s3Service, bucketName, keyPrefix = '') => new Promise((resolve, reject) => s3Service.listObjects(
   { Bucket: bucketName, MaxKeys: 512, Prefix: keyPrefix },
   (error, result) => {
@@ -109,7 +111,7 @@ const deleteS3Object = (s3Service, bucketName, key) => new Promise((resolve, rej
     resolve({})
   }
 ))
-const deleteS3ObjectList = (s3Service, bucketName, keyList) => new Promise((resolve, reject) => s3Service.deleteObject(
+const deleteS3ObjectList = (s3Service, bucketName, keyList) => new Promise((resolve, reject) => s3Service.deleteObjects(
   { Bucket: bucketName, Delete: { Objects: keyList.map((v) => ({ Key: v })), Quiet: true } },
   (error, result) => {
     if (error) return reject(error)

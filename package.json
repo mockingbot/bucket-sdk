@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "bucket-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "mockingbot",
   "license": "MIT",
   "description": "Bucket SDK for AWS-S3/TenCent-Cloud.",
