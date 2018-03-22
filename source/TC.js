@@ -17,8 +17,8 @@ const connectTcBucket = async ({ appId, secretId, secretKey, region, bucket, sho
   if (!isExist || !isAuth) throw new Error(`[connectTcBucket] bucket not found with name: ${bucket} (isExist: ${isExist}, isAuth: ${isAuth})`)
   showLog && console.log(`[connectTcBucket] selected region: ${region}, bucket: ${bucket}`)
 
-  const getBufferList = async (keyPrefix) => {
-    const { objectList: bufferList } = await getTcObjectList(tcService, region, bucketName, keyPrefix)
+  const getBufferList = async (keyPrefix, maxKey) => {
+    const { objectList: bufferList } = await getTcObjectList(tcService, region, bucketName, keyPrefix, maxKey)
     __DEV__ && console.log(`[getBufferList] downloaded buffer list. length: ${bufferList.length}`)
     return { bufferList }
   }
@@ -30,7 +30,7 @@ const connectTcBucket = async ({ appId, secretId, secretKey, region, bucket, sho
   const putBuffer = async (key, buffer, accessType) => {
     const { eTag, url } = await putTcObject(tcService, region, bucketName, key, buffer, accessType)
     __DEV__ && console.log(`[putBuffer] uploaded buffer. eTag: ${eTag}, url: ${url}`)
-    return { key, eTag }
+    return { key, eTag, url } // return `url` for `copyBuffer`
   }
   const copyBuffer = async (key, sourceInfo, accessType) => {
     const sourceObjectUrl = sourceInfo.url.replace(/^\w+:\/\//, '') // TODO: STRANGE: must remove protocol
@@ -68,8 +68,8 @@ const checkTcBucket = (tcService, region, bucketName) => new Promise((resolve, r
     resolve({ isExist: statusCode !== 404, isAuth: statusCode !== 403 })
   }
 ))
-const getTcObjectList = (tcService, region, bucketName, keyPrefix = '') => new Promise((resolve, reject) => tcService.getBucket(
-  { Region: region, Bucket: bucketName, Prefix: keyPrefix, MaxKeys: '512' },
+const getTcObjectList = (tcService, region, bucketName, keyPrefix = '', maxKey = 512) => new Promise((resolve, reject) => tcService.getBucket(
+  { Region: region, Bucket: bucketName, Prefix: keyPrefix, MaxKeys: String(maxKey) },
   (error, result) => {
     if (error) return reject(error)
     // __DEV__ && console.log('[getTcObjectList]', result)

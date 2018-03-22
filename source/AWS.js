@@ -18,8 +18,8 @@ const connectAwsBucket = async ({ accessKeyId, secretAccessKey, region, bucket, 
   if (!bucketList.find(({ Name }) => Name === bucket)) throw new Error(`[connectAwsBucket] bucket not found with name: ${bucket}`)
   showLog && console.log(`[connectAwsBucket] selected region: ${region}, bucket: ${bucket}`)
 
-  const getBufferList = async (keyPrefix) => {
-    const { objectList: bufferList } = await getS3ObjectList(s3Service, bucket, keyPrefix)
+  const getBufferList = async (keyPrefix, maxKey) => {
+    const { objectList: bufferList } = await getS3ObjectList(s3Service, bucket, keyPrefix, maxKey)
     __DEV__ && console.log(`[getBufferList] downloaded buffer list. length: ${bufferList.length}`)
     return { bufferList } // [ {  key, eTag, size, lastModified } ]
   }
@@ -66,8 +66,8 @@ const getS3BucketList = (s3Service) => new Promise((resolve, reject) => s3Servic
     resolve({ bucketList, ownerMap })
   }
 ))
-const getS3ObjectList = (s3Service, bucketName, keyPrefix = '') => new Promise((resolve, reject) => s3Service.listObjects(
-  { Bucket: bucketName, MaxKeys: 512, Prefix: keyPrefix },
+const getS3ObjectList = (s3Service, bucketName, keyPrefix = '', maxKey = 512) => new Promise((resolve, reject) => s3Service.listObjects(
+  { Bucket: bucketName, Prefix: keyPrefix, MaxKeys: maxKey },
   (error, result) => {
     if (error) return reject(error)
     // __DEV__ && console.log('[getS3ObjectList]', result)
