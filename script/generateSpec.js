@@ -7,7 +7,7 @@ import { createExportParser } from 'dev-dep-tool/library/ExportIndex/parseExport
 import { generateExportInfo } from 'dev-dep-tool/library/ExportIndex/generateInfo'
 import { renderMarkdownExportPath } from 'dev-dep-tool/library/ExportIndex/renderMarkdown'
 
-import { getDirectoryContent, walkDirectoryContent } from 'dr-js/library/node/file/Directory'
+import { getDirectoryContent, walkDirectoryContent } from 'dr-js/module/node/file/Directory'
 
 const PATH_ROOT = resolve(__dirname, '..')
 const fromRoot = (...args) => resolve(PATH_ROOT, ...args)

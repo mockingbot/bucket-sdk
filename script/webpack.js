@@ -18,10 +18,11 @@ runMain(async (logger) => {
   const isProduction = mode === 'production'
 
   const babelOption = {
+    configFile: false,
     babelrc: false,
     cacheDirectory: isProduction,
-    presets: [ [ '@babel/env', { targets: { node: 8 }, modules: false } ] ],
-    plugins: [ [ 'lodash' ], [ '@babel/proposal-class-properties' ], [ '@babel/proposal-object-rest-spread', { useBuiltIns: true } ] ]
+    presets: [ [ '@babel/env', { targets: { node: '8.8' }, modules: false } ] ],
+    plugins: [ [ 'lodash' ], [ '@babel/proposal-class-properties' ] ]
   }
 
   const config = {
