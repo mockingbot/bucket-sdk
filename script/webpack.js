@@ -31,6 +31,7 @@ runMain(async (logger) => {
     target: 'node', // support node main modules like 'fs'
     output: { path: fromOutput('library'), filename: '[name].js', libraryTarget: 'commonjs2' },
     entry: { index: 'source/index' },
+    // externals: { urllib: '() => {}', xml2js: '() => {}' },
     resolve: { alias: { source: fromRoot('source') } },
     module: { rules: [ { test: /\.js$/, use: [ { loader: 'babel-loader', options: babelOption } ] } ] },
     plugins: [ new DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify(mode), '__DEV__': !isProduction }), new LodashWebpackPlugin() ],
