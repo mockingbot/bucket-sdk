@@ -87,24 +87,30 @@ const getTcObject = (tcService, region, bucketName, key) => new Promise((resolve
     resolve({ buffer })
   }
 ))
-const putTcObject = (tcService, region, bucketName, key, buffer, accessType = ACCESS_TYPE.PRIVATE) => new Promise((resolve, reject) => tcService.putObject(
-  { Region: region, Bucket: bucketName, Key: key, Body: buffer, ACL: accessType },
-  (error, result) => {
-    if (error) return reject(error)
-    // __DEV__ && console.log('[putTcObject]', result)
-    const { ETag: eTag, Location: url } = result
-    resolve({ eTag, url })
-  }
-))
-const copyTcObject = (tcService, region, bucketName, key, sourceObjectUrl, accessType = ACCESS_TYPE.PRIVATE) => new Promise((resolve, reject) => tcService.putObjectCopy(
-  { Region: region, Bucket: bucketName, Key: key, CopySource: sourceObjectUrl, ACL: accessType },
-  (error, result) => {
-    if (error) return reject(error)
-    // __DEV__ && console.log('[copyTcObject]', result)
-    const { ETag: copyObjectETag } = result
-    resolve({ copyObjectETag })
-  }
-))
+const putTcObject = (tcService, region, bucketName, key, buffer, accessType = ACCESS_TYPE.PRIVATE) => new Promise((resolve, reject) => {
+  if (accessType !== undefined) console.warn(`[WARN][putTcObject] dropped object accessType: ${accessType} (due to TC single Bucket 999 ACL count limit)`)
+  return tcService.putObject(
+    { Region: region, Bucket: bucketName, Key: key, Body: buffer }, // ACL: accessType
+    (error, result) => {
+      if (error) return reject(error)
+      // __DEV__ && console.log('[putTcObject]', result)
+      const { ETag: eTag, Location: url } = result
+      resolve({ eTag, url })
+    }
+  )
+})
+const copyTcObject = (tcService, region, bucketName, key, sourceObjectUrl, accessType = ACCESS_TYPE.PRIVATE) => new Promise((resolve, reject) => {
+  if (accessType !== undefined) console.warn(`[WARN][copyTcObject] dropped object accessType: ${accessType} (due to TC single Bucket 999 ACL count limit)`)
+  return tcService.putObjectCopy(
+    { Region: region, Bucket: bucketName, Key: key, CopySource: sourceObjectUrl }, // ACL: accessType
+    (error, result) => {
+      if (error) return reject(error)
+      // __DEV__ && console.log('[copyTcObject]', result)
+      const { ETag: copyObjectETag } = result
+      resolve({ copyObjectETag })
+    }
+  )
+})
 const deleteTcObject = (tcService, region, bucketName, key) => new Promise((resolve, reject) => tcService.deleteObject(
   { Region: region, Bucket: bucketName, Key: key },
   (error, result) => {
