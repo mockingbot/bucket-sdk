@@ -1,11 +1,11 @@
 import { resolve } from 'path'
 import { execSync } from 'child_process'
 
-import { getFileList } from 'dr-js/module/node/file/Directory'
-import { argvFlag, runMain } from 'dev-dep-tool/library/__utils__'
+import { argvFlag, runMain } from 'dev-dep-tool/library/main'
 import { getLogger } from 'dev-dep-tool/library/logger'
+import { getScriptFileListFromPathList } from 'dev-dep-tool/library/fileList'
 import { initOutput, packOutput, publishOutput } from 'dev-dep-tool/library/commonOutput'
-import { getUglifyESOption, minifyFileListWithUglifyEs } from 'dev-dep-tool/library/uglify'
+import { getTerserOption, minifyFileListWithTerser } from 'dev-dep-tool/library/minify'
 
 const PATH_ROOT = resolve(__dirname, '..')
 const PATH_OUTPUT = resolve(__dirname, '../output-gitignore')
@@ -24,9 +24,9 @@ runMain(async (logger) => {
   execSync('npm run build-library', execOptionRoot)
 
   logger.padLog(`minify output`)
-  await minifyFileListWithUglifyEs({
-    fileList: (await getFileList(fromOutput())).filter((path) => path.endsWith('.js') && !path.endsWith('.test.js')),
-    option: getUglifyESOption({ isDevelopment: false, isModule: true }),
+  await minifyFileListWithTerser({
+    fileList: await getScriptFileListFromPathList([ '.' ], fromOutput),
+    option: getTerserOption(),
     rootPath: PATH_OUTPUT,
     logger
   })
