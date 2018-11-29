@@ -1,11 +1,10 @@
 import { resolve } from 'path'
 import { writeFileSync } from 'fs'
 
-import { argvFlag, runMain } from 'dev-dep-tool/module/main'
-import { getLogger } from 'dev-dep-tool/module/logger'
-import { collectSourceRouteMap } from 'dev-dep-tool/module/ExportIndex/parseExport'
-import { generateExportInfo } from 'dev-dep-tool/module/ExportIndex/generateInfo'
-import { autoAppendMarkdownHeaderLink, renderMarkdownExportPath } from 'dev-dep-tool/module/ExportIndex/renderMarkdown'
+import { runMain } from 'dr-dev/module/main'
+import { collectSourceRouteMap } from 'dr-dev/module/node/export/parse'
+import { generateExportInfo } from 'dr-dev/module/node/export/generate'
+import { autoAppendMarkdownHeaderLink, renderMarkdownExportPath } from 'dr-dev/module/node/export/renderMarkdown'
 
 const PATH_ROOT = resolve(__dirname, '..')
 const fromRoot = (...args) => resolve(PATH_ROOT, ...args)
@@ -27,4 +26,4 @@ runMain(async (logger) => {
     ),
     ''
   ].join('\n'))
-}, getLogger('generate-spec', argvFlag('quiet')))
+}, 'generate-spec')

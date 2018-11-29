@@ -1,11 +1,10 @@
 import { resolve } from 'path'
 import { execSync } from 'child_process'
 
-import { argvFlag, runMain } from 'dev-dep-tool/module/main'
-import { getLogger } from 'dev-dep-tool/module/logger'
-import { getScriptFileListFromPathList } from 'dev-dep-tool/module/fileList'
-import { initOutput, packOutput, publishOutput } from 'dev-dep-tool/module/commonOutput'
-import { getTerserOption, minifyFileListWithTerser } from 'dev-dep-tool/module/minify'
+import { getScriptFileListFromPathList } from 'dr-dev/module/node/fileList'
+import { argvFlag, runMain } from 'dr-dev/module/main'
+import { initOutput, packOutput, publishOutput } from 'dr-dev/module/output'
+import { getTerserOption, minifyFileListWithTerser } from 'dr-dev/module/minify'
 
 const PATH_ROOT = resolve(__dirname, '..')
 const PATH_OUTPUT = resolve(__dirname, '../output-gitignore')
@@ -24,13 +23,10 @@ runMain(async (logger) => {
   execSync('npm run build-library', execOptionRoot)
 
   logger.padLog(`minify output`)
-  await minifyFileListWithTerser({
-    fileList: await getScriptFileListFromPathList([ '.' ], fromOutput),
-    option: getTerserOption(),
-    rootPath: PATH_OUTPUT,
-    logger
-  })
+  const fileList = await getScriptFileListFromPathList([ '.' ], fromOutput)
+  await minifyFileListWithTerser({ fileList, option: getTerserOption(), rootPath: PATH_OUTPUT, logger })
+  await minifyFileListWithTerser({ fileList, option: getTerserOption(), rootPath: PATH_OUTPUT, logger }) // once more
 
   const pathPackagePack = await packOutput({ fromRoot, fromOutput, logger })
   await publishOutput({ flagList: process.argv, packageJSON, pathPackagePack, extraArgs: [ '--userconfig', '~/mockingbot.npmrc' ], logger })
-}, getLogger(process.argv.slice(2).join('+'), argvFlag('quiet')))
+})

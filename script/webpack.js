@@ -2,9 +2,8 @@ import { resolve as resolvePath } from 'path'
 import { DefinePlugin } from 'webpack'
 import LodashWebpackPlugin from 'lodash-webpack-plugin'
 
-import { argvFlag, runMain } from 'dev-dep-tool/module/main'
-import { getLogger } from 'dev-dep-tool/module/logger'
-import { compileWithWebpack, commonFlag } from 'dev-dep-tool/module/webpack'
+import { argvFlag, runMain } from 'dr-dev/module/main'
+import { compileWithWebpack, commonFlag } from 'dr-dev/module/webpack'
 
 const PATH_ROOT = resolvePath(__dirname, '..')
 const PATH_OUTPUT = resolvePath(__dirname, '../output-gitignore')
@@ -18,7 +17,7 @@ runMain(async (logger) => {
     configFile: false,
     babelrc: false,
     cacheDirectory: isProduction,
-    presets: [ [ '@babel/env', { targets: { node: '8.8' }, modules: false } ] ],
+    presets: [ [ '@babel/env', { targets: { node: '10' }, modules: false } ] ],
     plugins: [ [ 'lodash' ] ]
   }
 
@@ -37,4 +36,4 @@ runMain(async (logger) => {
 
   logger.padLog(`compile with webpack mode: ${mode}, isWatch: ${Boolean(isWatch)}`)
   await compileWithWebpack({ config, isWatch, profileOutput, assetMapOutput, logger })
-}, getLogger(`webpack`))
+}, 'webpack')
