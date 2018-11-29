@@ -7,8 +7,14 @@ module.exports = {
     [ '@babel/env', { targets: { node: '8.8' }, modules: isModule ? false : 'commonjs' } ]
   ],
   plugins: [
-    [ 'module-resolver', { root: [ './' ], alias: isModule ? undefined : { 'dr-js/module/(.+)': 'dr-js/library/' } } ],
-    [ 'minify-replace', { replacements: [ { identifierName: '__DEV__', replacement: { type: 'booleanLiteral', value: isDev } } ] } ]
+    [ 'minify-replace', { replacements: [ { identifierName: '__DEV__', replacement: { type: 'booleanLiteral', value: isDev } } ] } ],
+    [ 'module-resolver', {
+      root: [ './' ],
+      alias: isModule ? undefined : {
+        'dev-dep-tool/module/(.+)': 'dev-dep-tool/library/',
+        'dr-js/module/(.+)': 'dr-js/library/'
+      }
+    } ]
   ],
   comments: false
 }

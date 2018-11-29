@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "bucket-sdk",
-  "version": "0.2.2-dev.0",
+  "version": "0.2.2",
   "author": "mockingbot",
   "license": "MIT",
   "description": "Bucket SDK for AWS-S3/Ali-OSS/TenCent-Cloud.",
@@ -26,11 +26,11 @@
     "npm": ">=6"
   },
   "devDependencies": {
-    "aws-sdk": "^2.313.0",
-    "ali-oss-slim": "^5.3.1",
+    "aws-sdk": "2.313.0",
+    "ali-oss-slim": "5.3.1",
     "cos-nodejs-sdk-slim": "2.3.0-dev.1",
-    "dev-dep-tool": "0.4.1-dev.0",
-    "dev-dep-web": "^0.4.0",
+    "dev-dep-tool": "0.5.1-dev.0",
+    "dev-dep-web": "0.5.1-dev.0",
     "babel-plugin-lodash": "^3.3.4",
     "lodash-webpack-plugin": "^0.11.5"
   }
